@@ -6,10 +6,10 @@ services:
     depends_on:
       - express
     ports:
-      - "8080:3000"
+      - "8081:3000"
     environment:
-      - EXPRESS_HOST_1=tfd-b5-backend-express-1
-      - EXPRESS_HOST_2=tfd-b5-backend-express-2
+      - EXPRESS_HOST_1=backend-dev-express-1
+      - EXPRESS_HOST_2=backend-dev-express-2
       - EXPRESS_PORT=3000
       - NGINX_SERVER_NAME=localhost
       - NGINX_MAX_BODY=100M
@@ -22,14 +22,13 @@ services:
     environment:
       - NODE_ENV=dev
     volumes:
-      - ./src:/app/src
-      - .env:/app/.env
+      - .env.dev:/app/.env.dev
     scale: 2
   database:
     image: mongo:8.2.7-noble
     container_name: devops-database-dev
     ports:
-      - 27017:27017
+      - 27018:27017
     volumes:
       - devops-database-data:/data/db
 volumes:
