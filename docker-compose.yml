@@ -31,8 +31,6 @@ services:
     image: mongo:8.2.7-noble
     container_name: devops-database
     restart: unless-stopped
-    ports:
-      - 27017:27017
     volumes:
       - devops-database-data:/data/db
     environment:

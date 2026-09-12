@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile-nginx-dev
     depends_on:
       - express
-    ports:
-      - "8081:3000"
     environment:
       - EXPRESS_HOST_1=backend-dev-express-1
       - EXPRESS_HOST_2=backend-dev-express-2
       - EXPRESS_PORT=3000
       - NGINX_SERVER_NAME=localhost
       - NGINX_MAX_BODY=100M
+    networks:
+      - proxy-net
   express:
     build:
       context: .
@@ -24,12 +24,17 @@ services:
     volumes:
       - .env.dev:/app/.env.dev
     scale: 2
+    networks:
+      - proxy-net
   database:
     image: mongo:8.2.7-noble
     container_name: devops-database-dev
-    ports:
-      - 27018:27017
     volumes:
       - devops-database-data:/data/db
+    networks:
+      - proxy-net
 volumes:
   devops-database-data:
+networks:
+  proxy-net:
+    external: true
