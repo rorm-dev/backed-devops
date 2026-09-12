@@ -24,8 +24,6 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=prod
-    volumes:
-      - .env:/app/.env
     scale: 3
   database:
     image: mongo:8.2.7-noble
