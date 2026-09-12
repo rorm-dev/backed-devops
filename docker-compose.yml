@@ -6,8 +6,6 @@ services:
     depends_on:
       - express
     restart: unless-stopped
-    ports:
-      - "8080:3000"
     environment:
       - EXPRESS_HOST_1=backend-prod-express-1
       - EXPRESS_HOST_2=backend-prod-express-2
@@ -15,6 +13,8 @@ services:
       - EXPRESS_PORT=3000
       - NGINX_SERVER_NAME=localhost
       - NGINX_MAX_BODY=100M
+    networks:
+      - proxy-net
   express:
     build:
       context: .
@@ -25,6 +25,8 @@ services:
     environment:
       - NODE_ENV=prod
     scale: 3
+    networks:
+      - proxy-net
   database:
     image: mongo:8.2.7-noble
     container_name: devops-database
@@ -36,5 +38,10 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    networks:
+      - proxy-net
 volumes:
   devops-database-data:
+networks:
+  proxy-net:
+    external: true
