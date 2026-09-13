@@ -19,18 +19,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            set -eux
-
-            cd ~/tfd-b5-backend
-
-            echo "=== Current user ==="
-            whoami
-
-            echo "=== Current directory ==="
-            pwd
-            echo "=== Git status ==="
-            git status
-            
+            cd /home/deploy/tfd-b5-backend
             git pull origin dev
             docker compose -f docker-compose.dev.yml -p backend-dev build --no-cache
             docker compose -f docker-compose.dev.yml -p backend-dev up -d --remove-orphans
