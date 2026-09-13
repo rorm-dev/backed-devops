@@ -1,0 +1,28 @@
+# .github/workflows/deploy.yml
+name: Build and Deploy on dev branch
+
+on:
+  push:
+    branches:
+      - dev          # Only deploy from dev branch
+
+jobs:
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-push          # Wait for the build job to complete
+    
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd tfd-b5-backend
+            git pull origin dev
+            docker compose -f docker-compose.dev.yml -p backend-dev build --no-cache
+            docker compose -f docker-compose.dev.yml -p backend-dev up -d --remove-orphans
+            docker image prune -f
