@@ -1,28 +1,27 @@
-# .github/workflows/deploy.yml
-name: Build and Deploy on dev branch
+name: Test SSH
 
 on:
   push:
     branches:
-      - dev          # Only deploy from dev branch
+      - dev
 
 jobs:
-  deploy:
+  test-ssh:
     runs-on: ubuntu-latest
-    
+
     steps:
-      - name: Deploy to VPS via SSH
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            set -eux
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
 
-            echo "=== Current user ==="
-            whoami
-
-            echo "=== Current directory ==="
-            pwd
+      - name: Test SSH connection
+        run: |
+          ssh \
+            -p "${{ secrets.SSH_PORT }}" \
+            -i ~/.ssh/id_ed25519 \
+            -o StrictHostKeyChecking=yes \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            "whoami && pwd"
