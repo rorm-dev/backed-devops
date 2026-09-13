@@ -12,14 +12,25 @@ jobs:
     
     steps:
       - name: Deploy to VPS via SSH
-        uses: appleboy/ssh-action@v1.2.5
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd tfd-b5-backend
+            set -eux
+
+            cd ~/tfd-b5-backend
+
+            echo "=== Current user ==="
+            whoami
+
+            echo "=== Current directory ==="
+            pwd
+            echo "=== Git status ==="
+            git status
+            
             git pull origin dev
             docker compose -f docker-compose.dev.yml -p backend-dev build --no-cache
             docker compose -f docker-compose.dev.yml -p backend-dev up -d --remove-orphans
