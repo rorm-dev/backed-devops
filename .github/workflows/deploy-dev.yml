@@ -7,10 +7,8 @@ on:
       - dev          # Only deploy from dev branch
 
 jobs:
-  
   deploy:
     runs-on: ubuntu-latest
-    needs: build-and-push          # Wait for the build job to complete
     
     steps:
       - name: Deploy to VPS via SSH
