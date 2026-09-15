@@ -6,7 +6,7 @@ on:
     branches:
       - dev          # Only deploy from dev branch
 env:
-  IMAGE_NAME: devsororm/devops-backend-dev
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/devops-backend-dev
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -24,7 +24,7 @@ jobs:
       - name: Extract short SHA
         id: vars
         run: echo "sha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
