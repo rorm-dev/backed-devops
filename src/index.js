@@ -40,7 +40,7 @@ app.get('/health', (req, res) => {
     console.log("Hello")
     res.status(200).json({
         message: `Server is healthy from ${process.env.NODE_ENV} environment`,
-        version: '1.0.6',
+        version: '1.0.7',
         status: 'healthy',
         timestamp: new Date().toISOString(),
         uptime: process.uptime()
