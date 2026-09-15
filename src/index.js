@@ -18,7 +18,7 @@ dotenv.config({ path: envPath });
 if (!fs.existsSync(envPath)) {
     dotenv.config();
 }
-console.log(`Current NODE_ENV: ${process.env.MONGO_ATLAS}`);
+
 import express from 'express';
 import router from './routes/index.js';
 const app = express();
