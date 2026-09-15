@@ -12,6 +12,7 @@ console.log(`Current NODE_ENV: ${process.env.NODE_ENV}`);
 console.log(`MONGO_ATLAS String: ${process.env.MONGO_ATLAS}`);
 const envFile = `.env.${process.env.NODE_ENV || 'dev'}`;
 const envPath = path.resolve(process.cwd(), envFile);
+console.log(envPath);
 
 dotenv.config({ path: envPath });
 
