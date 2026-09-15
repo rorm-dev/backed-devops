@@ -16,9 +16,7 @@ services:
     networks:
       - proxy-net
   express:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: devsororm/devops-backend:${IMAGE_TAG:-latest}
     depends_on:
       - database
     restart: unless-stopped
