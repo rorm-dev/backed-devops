@@ -15,7 +15,7 @@ mongoose.connection.on('disconnected', () => {
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_ATLAS, {
-            dbName: 'fullstack-d6'
+            dbName: 'backend'
         });
     } catch (error) {
         console.error('❌ MongoDB connection error:', error);
