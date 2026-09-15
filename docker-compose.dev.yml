@@ -14,9 +14,7 @@ services:
     networks:
       - proxy-net
   express:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
+    image: devsororm/devops-backend-dev:${IMAGE_TAG:-latest}
     depends_on:
       - database
     environment:
