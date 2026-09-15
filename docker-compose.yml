@@ -19,11 +19,11 @@ services:
     image: devsororm/devops-backend:${IMAGE_TAG:-latest}
     depends_on:
       - database
+    volumes:
+      - .env.prod:/app/.env.prod
     restart: unless-stopped
     environment:
       - NODE_ENV=prod
-    volumes:
-      - .env.prod:/app/.env.prod
     scale: 3
     networks:
       - proxy-net
