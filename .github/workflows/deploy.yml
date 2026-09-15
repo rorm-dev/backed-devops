@@ -53,6 +53,6 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd tfd-b5-backend
-            docker compose -f docker-compose.yml --env-file .env.prod -p backend-prod pull
-            docker compose -f docker-compose.yml --env-file .env.prod -p backend-prod up -d --remove-orphans
+            docker compose -p backend-prod pull
+            docker compose -p backend-prod up -d --remove-orphans
             docker image prune -f
