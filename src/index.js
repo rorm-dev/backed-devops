@@ -24,7 +24,7 @@ import router from './routes/index.js';
 const app = express();
 import connectDB from './config/database.js';
 import { version } from 'os';
-import { register, httpRequestDuration } from './metrics';
+import { register, httpRequestDuration } from './metrics.js';
 
 connectDB()
 app.use(helmet());
