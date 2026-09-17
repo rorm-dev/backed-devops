@@ -24,6 +24,7 @@ import router from './routes/index.js';
 const app = express();
 import connectDB from './config/database.js';
 import { version } from 'os';
+import { register, httpRequestDuration } from './metrics';
 
 connectDB()
 app.use(helmet());
@@ -34,6 +35,19 @@ app.use(bodyParser.json({ limit: '10kb' }));
 
 
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+  const end = httpRequestDuration.startTimer();
+  res.on('finish', () => {
+    end({ method: req.method, route: req.route?.path ?? req.path, status: res.statusCode });
+  });
+  next();
+});
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
